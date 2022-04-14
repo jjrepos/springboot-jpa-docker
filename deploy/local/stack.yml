@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  api:
+    image: skynet.bah.com/microservices/$SERVICE:$IMAGE_VERSION
+    environment:
+      - JAVA_OPTIONS=-Xmx3g -Xms3g -Duser.timezone=America/New_York -Dapi.version=$IMAGE_VERSION -Dnewrelic.environment=devlopment
+      - CONFIG_HOME=/usr/local/api/config/
+    ports:
+      - "80:80"
+    secrets:
+      - source: application.yaml
+        target: /usr/local/api/config/application.yml
+    configs:
+      - source: newrelic.yml
+        target: /usr/lib/apm/newrelic.yml
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+secrets:
+  application.yaml:
+    file: application.yml
+
+configs:
+  newrelic.yml:
+    file: newrelic.yml

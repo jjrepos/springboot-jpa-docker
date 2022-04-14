@@ -1,0 +1,59 @@
+spring:
+  main:
+    banner-mode: 'off'
+  datasource:
+    name: springboot-jpa-docker-ds
+    platform: oracle
+    url: jdbc:oracle:thin:@dbhost.com:1521/springboot-jpa-docker
+    username: user
+    password: "*********"
+    driver-class-name: oracle.jdbc.OracleDriver
+    continue-on-error: false
+    hikari:
+      maximum-pool-size: 1
+      minimum-idle: 1
+      auto-commit: false
+      connection-timeout: 30000
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      transaction-type: RESOURCE_LOCAL
+    hibernate:
+      dialect: org.hibernate.dialect.Oracle12cDialect
+      jdbc:
+        time_zone = TimeZone
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  task:
+    execution:
+      thread-name-prefix: "image-scaler-"
+      shutdown:
+        await-termination: true
+        await-termination-period: 30s
+      pool:
+        core-size: 1
+        max-size: 1
+        queue-capacity: 25
+logging:
+  level:
+    org.springframework: INFO
+    org.springframework.web: INFO
+    org.springframework.transaction: INFO
+    com.bah.is.profileimage: DEBUG
+    org.hibernate.sql: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+    beans:
+      enabled: false
+server:
+  port: 80

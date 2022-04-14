@@ -1,0 +1,43 @@
+spring:
+  main:
+    banner-mode: 'off'
+  datasource:
+    url: jdbc:h2:mem:testdb;Mode=Oracle;DB_CLOSE_DELAY=-1
+    platform: h2
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    continue-on-error: false
+    hikari:
+      autoCommit: false
+      maximum-pool-size: 5
+      minimum-idle: 2
+      auto-commit: false
+      connection-timeout: 30000
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      transaction-type: RESOURCE_LOCAL
+    hibernate:
+      dialect: org.hibernate.dialect.H2Dialect
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  task:
+    execution:
+      thread-name-prefix: "image-scaler-"
+      shutdown:
+        await-termination: true
+        await-termination-period: 30s
+      pool:
+        core-size: 1
+        max-size: 1
+        queue-capacity: 25
+logging:
+  level:
+    org.springframework: INFO
+    com.bah.is.profileimage: DEBUG
+    com.bah.is.atom.api: INFO
+    org.hibernate.sql: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: DEBUG
